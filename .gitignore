@@ -1,4 +1,4 @@
-/node_modules
-/.idea
-package-lock.json
+/backend/node_modules
+/backend/.idea
+/backend/package-lock.json
 .DS_Store
