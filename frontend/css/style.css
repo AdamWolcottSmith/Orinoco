@@ -1,1 +1,56 @@
-/* No CSS */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Montserrat', sans-serif;
+}
+
+header {
+  background-color: #f3e9f1;
+  background-size: cover;
+  background-position: center;
+  height: 150px;
+  position: relative;
+}
+
+.header--main {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 2;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  padding: 40px 60px 0 60px;
+}
+
+.navbar .navbar--item {
+  list-style: none;
+  display: inline-block;
+  padding: 27px 10px 0 10px;
+}
+
+.navbar .navbar--item .navbar--item--link {
+  padding: 5px;
+  background-color: #fff;
+  text-decoration: none;
+}
+
+.navbar .navbar--item .navbar--item--cart {
+  padding: 5px;
+  background-color: blueviolet;
+  color: #fff;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.navbar .navbar--item .navbar--item--cart .navbar--cart--icon {
+  vertical-align: bottom;
+  font-size: 20px;
+  padding-right: 5px;
+}
+
+.navbar .navbar--item .navbar--item--cart .navbar--cart--amt {
+  padding-left: 5px;
+}
