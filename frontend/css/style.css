@@ -54,3 +54,64 @@ header {
 .navbar .navbar--item .navbar--item--cart .navbar--cart--amt {
   padding-left: 5px;
 }
+
+#products {
+  padding-top: 200px;
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.card {
+  margin: 1rem;
+  border: 1px solid gray;
+  box-shadow: 10px 10px #888888;
+  text-decoration: none;
+  height: 400px;
+  width: 400px;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  padding: 1em;
+}
+
+.card .product--img {
+  height: 200px;
+  width: 250px;
+  border-radius: 30%;
+  opacity: 1;
+  transition: .5s ease;
+  backface-visibility: hidden;
+}
+
+.card .middle {
+  transition: .5s ease;
+  opacity: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.card .text {
+  background-color: blueviolet;
+  color: #f3e9f1;
+  font-size: 16px;
+  padding: 16px 32px;
+}
+
+.card p {
+  text-align: center;
+}
+
+.card:hover .product--img {
+  opacity: 0.3;
+}
+
+.card:hover .middle {
+  opacity: 1;
+}
