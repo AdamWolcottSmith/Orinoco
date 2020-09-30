@@ -1,24 +1,3 @@
-// console.log('les git wierd');
-// //
-// get all the products from http://localhost:3000/api/teddies
-// XMLHttpRequest
-
-// create elements for color, price, img, description, name, and then insert html 
-// addClasslist for style sheet 
-
-// loop over products array 
-
-// let xhttp = new XMLHttpRequest();
-// xhttp.onreadystatechange = function () {
-//   if (this.readyState == 4 && this.status == 200) {
-//     let teddyArr = JSON.parse(this.responseText);
-//     document.getElementById("product--container").innerHTML = teddyArr[0].colors;
-//     console.log(xhttp);
-//     console.log(teddyArr);
-//   }
-// };
-// xhttp.open('GET', 'http://localhost:3000/api/teddies/');
-// xhttp.send();
 
 ////
 
@@ -36,13 +15,12 @@ request.onload = function () {
   let data = JSON.parse(this.response)
   if (request.status >= 200 && request.status < 400) {
     data.forEach((teddy) => {
-      const card = document.createElement('a')
 
+      const card = document.createElement('a')
       card.setAttribute('class', 'card')
 
-      const urlString = '/orinoco/frontend/product.html?=' + teddy._id;
+      const urlString = '/orinoco/frontend/product.html?id=' + teddy._id;
       console.log(urlString)
-
       card.setAttribute('href', urlString)
 
       const img = document.createElement('img')
