@@ -1,64 +1,135 @@
-const products = document.getElementById('products')
-const container = document.createElement('div')
-const teddyUrl = 'http://localhost:3000/api/teddies/';
+//variables
+const cartBtn = document.querySelector('.cart-btn');
+const closeCartBtn = document.querySelector('.close-cart');
+const clearCartBtn = document.querySelector('.clear-cart');
+const cartDOM = document.querySelector('.cart');
+const cartOverlay = document.querySelector('.cart-overlay');
+const cartItems = document.querySelector('.cart-items');
+const cartTotal = document.querySelector('.cart-total');
+const cartContent = document.querySelector('.cart-content');
+const productsDOM = document.querySelector('.products-center');
+
+const apiUrl = 'http://localhost:3000/api/teddies/';
 const urlParams = new URLSearchParams(window.location.search);
-const id = urlParams.get('id');
+const productId = urlParams.get('id');
 
-container.setAttribute('class', 'container')
-products.appendChild(container)
+//cart
+let cart = [];
 
-const createNode = (elem) => {
-  return document.createElement(elem);
+//getting the product
+class Product {
+  async getProduct() {
+    try {
+      let result = await fetch(apiUrl + productId);
+      let data = await result.json();
+
+      let item = {};
+
+      item.name = data.name;
+      item.id = data._id;
+      item.image = data.imageUrl;
+      item.price = data.price / 100;
+      item.description = data.description;
+      item.colors = data.colors;
+
+      return item;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+}
+
+
+
+//display product
+class UI {
+  displayProduct(item) {
+    let result = `
+    <!-- single product -->
+     <div class="section-title">
+      <h2>${item.name}</h2>
+      <p class="product-desc">${item.description}</p>
+      <select name="colors" class="color-choice">
+        ${item.colors.map(color => { return `<option class="color-options" value="${color}">${color}</option>` }).join("")}
+      </select>
+      <input type="number" class="product-amt" min="0">
+      <h4>$${item.price}</h4>
+      <button class="bag-btn-out" data-id=${item.id}>
+         <i class="fas fa-shopping-cart"></i>
+         add to bag
+      </button>
+     </div>
+      <article class="product">
+       <div class="img-container">
+        <img 
+         src=${item.image} 
+         alt="product" 
+         class="product-img">
+       </div>
+      </article>
+      <!--end of single product -->
+    `;
+    productsDOM.innerHTML = result;
+  }
+  getBagButton() {
+    const button = document.querySelector('.bag-btn-out');
+
+    button.addEventListener('click', () => {
+
+      let id = button.dataset.id
+      console.log(id);
+
+      //color
+
+      let colorOption = document.querySelector('.color-choice');
+      let colorChoice = colorOption.options[colorOption.selectedIndex].text;
+      console.log(colorChoice);
+
+      //amount
+
+      let quantity = document.querySelector('.product-amt');
+      let cartQuantity = quantity.value
+      console.log(cartQuantity);
+
+      //storage
+      let products = [];
+      if (localStorage.getItem('products')) {
+        products = JSON.parse(localStorage.getItem('products'));
+      }
+      products.push({ 'productId': id, colorChoice, cartQuantity });
+      localStorage.setItem('products', JSON.stringify(products));
+
+
+
+    })
+  }
 };
 
-fetch(teddyUrl + id)
-  .then(res => res.json())
-  .then(teddy => {
-    let card = createNode('div'),
-      title = createNode('h2'),
-      img = createNode('img'),
-      description = createNode('p'),
-      price = createNode('div'),
-      colors = createNode('span')
-    addCart = createNode('button');
 
-    // CURRENCY FORMATTER
+//local storage
+class Storage {
+  static saveProduct(id, color) {
+    localStorage.setItem('cart', JSON.stringify(id, color));
+  };
+  // static getProduct(id) {
+  //  let products = JSON.parse(localStorage.getItem('products'));
+  //  // return products.find(product => product._id === id);
+  // };
 
-    let currency = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(teddy.price / 100);
 
-    title.textContent = teddy.name;
-    img.src = teddy.imageUrl;
-    description.textContent = teddy.description;
-    price.textContent = currency;
-    addCart.textContent = 'Add To Cart';
+  static saveCart(cart) {
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }
+}
 
-    card.setAttribute('class', 'teddy--card')
-    title.setAttribute('class', 'teddy--name')
-    img.setAttribute('class', 'teddy--img')
-    colors.setAttribute('class', 'teddy--colors')
-    description.setAttribute('class', 'teddy--description')
+document.addEventListener('DOMContentLoaded', () => {
+  const ui = new UI();
+  const product = new Product();
 
-    container.appendChild(card)
-    card.appendChild(img)
-    card.appendChild(title)
-    card.appendChild(description)
-    card.appendChild(price)
-    card.appendChild(colors)
-    card.appendChild(addCart)
-
-    // RADIO BUTTONS FOR COLOR CHOICE
-
-    for (i = 0; i < teddy.colors.length; i++) {
-      let radio = document.createElement('input');
-      let label = document.createElement('label');
-      radio.type = 'radio';
-      radio.name = 'colors';
-      radio.value = teddy.colors[i];
-      radio.id = 'color--choice';
-
-      label.setAttribute("for", teddy.colors[i]);
-      label.innerHTML = teddy.colors[i];
-      colors.appendChild(radio)
-      colors.appendChild(label)
-    }
-  })
+  //get product
+  product.getProduct().then(product => {
+    ui.displayProduct(product);
+  }).then(() => {
+    ui.getBagButton();
+  });
+});
