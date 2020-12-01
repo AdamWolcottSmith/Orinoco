@@ -14,7 +14,6 @@ const urlParams = new URLSearchParams(window.location.search);
 const productId = urlParams.get('id');
 
 
-
 //cart
 let cart = [];
 
@@ -42,7 +41,6 @@ class Product {
 }
 
 
-
 //display product
 class UI {
   displayProduct(item) {
@@ -56,9 +54,9 @@ class UI {
       </select>
       <input type="number" class="product-amt" min="0" placeholder="0">
       <h4 class="item-price">$${item.price}</h4>
-      <button class="bag-btn-out" data-id=${item.id}>
-         <i class="fas fa-shopping-cart"></i>
-         add to bag
+      <button class="bag-btn-out" data-id=${item.id} data-image=${item.image} data-name=${item.name}>
+        <i class="fas fa-shopping-cart"></i>
+          add to bag
       </button>
      </div>
       <article class="product">
@@ -81,29 +79,31 @@ class UI {
       let id = button.dataset.id
       console.log(id);
 
+      let image = button.dataset.image;
+      console.log(image);
+
+      let name = button.dataset.name;
+
       //color
 
       let colorOption = document.querySelector('.color-choice');
       let colorChoice = colorOption.options[colorOption.selectedIndex].text;
-      console.log(colorChoice);
 
       //amount
 
       let quantity = document.querySelector('.product-amt');
       let cartQuantity = quantity.value
-      console.log(cartQuantity);
 
       //price 
       let price = document.querySelector('.item-price').textContent;
       price = parseInt(price.slice(1), 10);
-      console.log(price);
 
       //storage
       let products = [];
       if (localStorage.getItem('products')) {
         products = JSON.parse(localStorage.getItem('products'));
       }
-      products.push({ 'productId': id, colorChoice, cartQuantity, price });
+      products.push({ 'productId': id, name, image, colorChoice, cartQuantity, price });
       localStorage.setItem('products', JSON.stringify(products));
 
       //cart
@@ -115,18 +115,6 @@ class UI {
       let navIcon = document.querySelector('.cart-icon');
       navIcon.innerText = products.length
     }
-
-    // console.log('setting cart values');
-    // console.log(products);
-    // let tempTotal = 0;
-    // let itemsTotal = 0;
-    // products.map(item => {
-    //   tempTotal += item.price * item.amount;
-    //   itemsTotal += item.amount
-    // })
-    // cartTotal.innerText = parseFloat(tempTotal.toFixed(2));
-    // cartItems.innerText = itemsTotal;
-    // console.log(cartTotal);
   }
 };
 
@@ -145,22 +133,8 @@ class Storage {
   }
 }
 
-// document.addEventListener('DOMContentLoaded', () => {
-//   const ui = new UI();
-//   const product = new Product();
-
-//   //get product
-//   product.getProduct().then(product => {
-//     ui.displayProduct(product);
-//   }).then(() => {
-//     ui.getBagButton();
-//   });
-// });
-
 const ui = new UI();
 const product = new Product();
-
-console.log('first', product);
 
 //get product
 product.getProduct().then(product => {
@@ -169,4 +143,4 @@ product.getProduct().then(product => {
   ui.getBagButton();
 });
 
-console.log('second', product);
+
