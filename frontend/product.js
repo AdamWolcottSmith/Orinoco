@@ -52,7 +52,7 @@ class UI {
       <select name="colors" class="color-choice">
         ${item.colors.map(color => { return `<option class="color-options" value="${color}">${color}</option>` }).join("")}
       </select>
-      <input type="number" class="product-amt" min="0" placeholder="0">
+      <input type="number" class="product-amt" value="1" min="1" placeholder="1">
       <h4 class="item-price">$${item.price}</h4>
       <button class="bag-btn-out" data-id=${item.id} data-image=${item.image} data-name=${item.name}>
         <i class="fas fa-shopping-cart"></i>

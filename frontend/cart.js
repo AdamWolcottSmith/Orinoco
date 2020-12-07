@@ -18,7 +18,7 @@ function addCartItem(item) {
       <h4>${item.name}</h4>
       <h6>${item.colorChoice}</h6>
       <h5>$${item.price}</h5>
-      <span class="remove-item" data-id=${item.productId}>remove</span>
+      <span class="remove-item" data-id="${item.productId + item.colorChoice}">remove</span>
     </div>
     <div>
       <i class="fas fa-chevron-up" data-id=${item.productId}></i>
@@ -39,11 +39,14 @@ if (localStorage.getItem('products') == null) {
 
   const data = JSON.parse(localStorage.getItem('products'))
 
-  for (let i = 0; i < data.length; i++) {
-    addCartItem(data[i])
+  // POPULATE CART
+
+  function setCart(products) {
+    for (let i = 0; i < products.length; i++) {
+      addCartItem(products[i])
+    }
   }
-
-
+  setCart(data)
 
   const chevUpElems = document.querySelectorAll('.fa-chevron-up');
   const chevDownElems = document.querySelectorAll('.fa-chevron-down');
@@ -52,15 +55,15 @@ if (localStorage.getItem('products') == null) {
 
   // CART TOTAL CALC
 
-  function cartTotalSum() {
-    const cartItem = data.filter(product => product.productId);
+  function cartTotalSum(products) {
+    const cartItem = products.filter(product => product.productId);
     const itemSum = cartItem.map(product => product.cartQuantity * product.price);
     const cartTotal = itemSum.reduce((acc, item) => acc + item, 0);
     cartTotalElem.innerText = cartTotal;
   }
-  cartTotalSum();
+  cartTotalSum(data);
 
-  // QTY INCREMENT
+  // QTY
 
   chevUpElems.forEach(chevUp => {
     chevUp.addEventListener('click', (e) => {
@@ -68,45 +71,103 @@ if (localStorage.getItem('products') == null) {
       let product = products[0];
       product.cartQuantity++;
       e.target.nextElementSibling.innerText = product.cartQuantity;
-      localStorage.setItem('products', JSON.stringify(data))
-      cartTotalSum()
-    })
-  })
+      localStorage.setItem('products', JSON.stringify(data));
+      cartTotalSum(data);
+    });
+  });
   chevDownElems.forEach(chevDown => {
     chevDown.addEventListener('click', (e) => {
       let products = data.filter(product => (e.target.dataset.id === product.productId));
       let product = products[0];
-      product.cartQuantity--;
-      e.target.previousElementSibling.innerText = product.cartQuantity;
-      localStorage.setItem('products', JSON.stringify(data))
-      cartTotalSum()
-    })
-  })
+      if (product.cartQuantity === 1) {
+        e.target.previousElementSibling.innerText = 1
+      } else {
+        product.cartQuantity--;
+        e.target.previousElementSibling.innerText = product.cartQuantity;
+        localStorage.setItem('products', JSON.stringify(data));
+        cartTotalSum(data);
+      };
+    });
+  });
 
-  // console.log(removeElem);
+  // REMOVE ITEM
 
-  // removeElem.forEach(removeBtn => {
-  //   removeBtn.addEventListener('click', (e) => {
-  //     let products = data.filter(product => (e.target.dataset.id === product.productId));
-  //     let product = products[0];
-  //     for (let i = 0; i < data.length; i++) {
-  //       if (data[i].productId === product) {
-  //         data.splice(i, 1);
-  //         break;
-  //       }
-  //       localStorage.setItem('products', JSON.stringify(data))
-  //     }
+  removeElem.forEach(removeBtn => {
+    removeBtn.addEventListener('click', (e) => {
 
-  //     console.log(data);
-  //   })
-  // })
+      // let products = data.filter(product => (e.target.dataset.id !== product.productId + product.colorChoice));
 
+      let products = data.filter(function (product) {
+        return e.target.dataset.id !== product.productId + product.colorChoice;
+      });
 
+      if (products.length >= 1) {
 
+        function populateStorage(items) {
+          localStorage.setItem('products', JSON.stringify(items))
+          cartTotalSum(items);
+          e.target.parentElement.parentElement.remove();
+          console.log(items);
+        }
+        populateStorage(products);
 
-}
+      } else {
 
+        const div = document.createElement('div');
+        div.innerHTML = `
+        <p style="text-align: center" >There is nothing in your cart</p>
+        `;
+        cartContent.appendChild(div);
+        localStorage.removeItem('products');
 
+      };
+    });
+  });
+};
 
+// SUBMIT ORDER FORM
+const apiUrl = 'http://localhost:3000/api/teddies/order'
+const subForm = document.getElementById('submit-form')
+console.log();
+subForm.addEventListener('submit', (e) => {
+  e.preventDefault();
 
+  const firstName = document.getElementById('first-name');
+  const lastName = document.getElementById('last-name');
+  const address = document.getElementById('address');
+  const city = document.getElementById('city');
+  const email = document.getElementById('email');
+  console.log(firstName);
+
+  const localData = JSON.parse(localStorage.getItem('products'))
+  const idSum = localData.map(product => product.productId);
+  console.log(idSum);
+
+  let reqBody = {
+    contact: {
+      firstName: firstName.value,
+      lastName: lastName.value,
+      address: address.value,
+      city: city.value,
+      email: email.value
+    },
+    products: idSum
+  }
+
+  fetch(apiUrl, {
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    },
+    body: JSON.stringify(reqBody)
+
+  }).then(function (response) {
+    return response.text()
+  }).then(function (text) {
+    console.log(text);
+  }).catch(function (error) {
+    console.log(error);
+  });
+})
 

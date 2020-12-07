@@ -285,13 +285,19 @@ body {
 }
 /*---------- Cart Item -------------------- */
 .cart-item {
-  display: flex;
-  justify-content: space-evenly;
+  display: grid;
   align-items: center;
-  /* grid-template-columns: .5fr 1fr auto; */
+  grid-template-columns: auto 1fr auto;
   grid-column-gap: 1.5rem;
-  margin: 1.5rem 3rem;
+  margin: 1.5rem 1rem;
 }
+
+@media screen and (min-width: 801px) {
+  .cart-item {
+    margin: 1.5rem 28rem;
+  }
+}
+
 .cart-item img {
   width: 100px;
   height: 75px;
