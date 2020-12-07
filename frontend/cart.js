@@ -130,18 +130,15 @@ const apiUrl = 'http://localhost:3000/api/teddies/order'
 const subForm = document.getElementById('submit-form')
 console.log();
 subForm.addEventListener('submit', (e) => {
-  e.preventDefault();
 
   const firstName = document.getElementById('first-name');
   const lastName = document.getElementById('last-name');
   const address = document.getElementById('address');
   const city = document.getElementById('city');
   const email = document.getElementById('email');
-  console.log(firstName);
 
   const localData = JSON.parse(localStorage.getItem('products'))
   const idSum = localData.map(product => product.productId);
-  console.log(idSum);
 
   let reqBody = {
     contact: {
@@ -153,6 +150,8 @@ subForm.addEventListener('submit', (e) => {
     },
     products: idSum
   }
+
+  e.preventDefault();
 
   fetch(apiUrl, {
     method: 'post',
@@ -169,5 +168,25 @@ subForm.addEventListener('submit', (e) => {
   }).catch(function (error) {
     console.log(error);
   });
+
+
+  // function showError() {
+  //   if (email.validity.valueMissing) {
+  //     alert('You need to enter an e-mail address.');
+  //   } else if (email.validity.typeMismatch) {
+  //     alert('Entered value needs to be an e-mail address.');
+  //   }
+  // }
+
+  // if (!email.validity.valueMissing) {
+  //   showError();
+  //   e.preventDefault();
+  // } else {
+
+  // }
+
+
+
+
 })
 

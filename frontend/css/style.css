@@ -294,7 +294,7 @@ body {
 
 @media screen and (min-width: 801px) {
   .cart-item {
-    margin: 1.5rem 28rem;
+    margin: 1.5rem 15rem;
   }
 }
 
@@ -324,6 +324,11 @@ body {
   cursor: pointer;
 }
 /*---------- End of Cart Item -------------------- */
+
+#submit-form {
+  display: inline-grid;
+  grid-gap: 0.3rem
+}
 
 .cart-footer {
   margin-top: 2rem;
