@@ -37,7 +37,7 @@ if (localStorage.getItem('products') == null) {
   cartContent.appendChild(div)
 } else {
 
-  const data = JSON.parse(localStorage.getItem('products'))
+  let data = JSON.parse(localStorage.getItem('products'))
 
   // POPULATE CART
 
@@ -50,7 +50,7 @@ if (localStorage.getItem('products') == null) {
 
   const chevUpElems = document.querySelectorAll('.fa-chevron-up');
   const chevDownElems = document.querySelectorAll('.fa-chevron-down');
-  const removeElem = document.querySelectorAll('.remove-item');
+  let removeElem = document.querySelectorAll('.remove-item');
   const cartTotalElem = document.querySelector('.cart-total');
 
   // CART TOTAL CALC
@@ -94,32 +94,27 @@ if (localStorage.getItem('products') == null) {
 
   removeElem.forEach(removeBtn => {
     removeBtn.addEventListener('click', (e) => {
-
-      // let products = data.filter(product => (e.target.dataset.id !== product.productId + product.colorChoice));
-
       let products = data.filter(function (product) {
         return e.target.dataset.id !== product.productId + product.colorChoice;
       });
-
       if (products.length >= 1) {
-
         function populateStorage(items) {
-          localStorage.setItem('products', JSON.stringify(items))
+          localStorage.setItem('products', JSON.stringify(items));
           cartTotalSum(items);
           e.target.parentElement.parentElement.remove();
-          console.log(items);
+          data = items;
+          removeElem = document.querySelectorAll('.remove-item');
         }
         populateStorage(products);
-
       } else {
-
+        e.target.parentElement.parentElement.remove();
+        cartTotalSum(products);
         const div = document.createElement('div');
         div.innerHTML = `
         <p style="text-align: center" >There is nothing in your cart</p>
         `;
         cartContent.appendChild(div);
         localStorage.removeItem('products');
-
       };
     });
   });
@@ -128,7 +123,7 @@ if (localStorage.getItem('products') == null) {
 // SUBMIT ORDER FORM
 const apiUrl = 'http://localhost:3000/api/teddies/order'
 const subForm = document.getElementById('submit-form')
-console.log();
+
 subForm.addEventListener('submit', (e) => {
 
   const firstName = document.getElementById('first-name');
@@ -139,6 +134,19 @@ subForm.addEventListener('submit', (e) => {
 
   const localData = JSON.parse(localStorage.getItem('products'))
   const idSum = localData.map(product => product.productId);
+  // const prodQty = idSum.push(product.productproduct => product.productId);
+
+  // loop thru prod ids
+  // and for every prod id loop thru cartqty let prodArr = [] prodArr.push(productId)
+
+  // for (let i = 0; i < localData.productId.length; i++) {
+  //   for (let i = 0; i < localData.cartQuantity.length; i++) {
+  //     let prodArr = [];
+  //     prodArr.push()
+  //   }
+  // }
+
+
   // const prodFilter = localData.map(product => product.cartQuantity)
   // console.log(prodFilter);
 
