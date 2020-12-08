@@ -92,7 +92,7 @@ class UI {
       //amount
 
       let quantity = document.querySelector('.product-amt');
-      let cartQuantity = quantity.value
+      let cartQuantity = parseInt(quantity.value)
 
       //price 
       let price = document.querySelector('.item-price').textContent;

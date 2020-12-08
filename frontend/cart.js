@@ -139,6 +139,19 @@ subForm.addEventListener('submit', (e) => {
 
   const localData = JSON.parse(localStorage.getItem('products'))
   const idSum = localData.map(product => product.productId);
+  // const prodFilter = localData.map(product => product.cartQuantity)
+  // console.log(prodFilter);
+
+  // function prodArr() {
+  //   let idSum = []
+  //   const localData = JSON.parse(localStorage.getItem('products'))
+  //   const cartItem = localData.filter(product => product.productId);
+  //   const itemSum = cartItem.map(product => product.productId * product.cartQuantity);
+  //   const total = itemSum.reduce((acc, item) => acc + item, 0);
+  //   idSum = total
+  //   return idSum
+  // }
+
 
   let reqBody = {
     contact: {
@@ -161,11 +174,14 @@ subForm.addEventListener('submit', (e) => {
     },
     body: JSON.stringify(reqBody)
 
-  }).then(function (response) {
-    return response.text()
-  }).then(function (text) {
-    console.log(text);
-  }).catch(function (error) {
+  }).then(response => {
+    return response.json()
+  }).then(result => {
+    console.log(result);
+
+    // const urlString = './confirmation.html?id=' + result.orderId;
+
+  }).catch(error => {
     console.log(error);
   });
 
