@@ -12,9 +12,6 @@ const apiUrl = 'http://localhost:3000/api/teddies/';
 
 
 
-//cart
-let cart = [];
-
 //getting the products
 class Products {
   async getProducts() {
@@ -70,12 +67,31 @@ class UI {
   };
 }
 
+// cart icon
+
+
+
+function setCartValues() {
+  const localData = JSON.parse(localStorage.getItem('products'));
+  if (localData === null) {
+
+  } else {
+    let navIcon = document.querySelector('.cart-icon');
+    navIcon.innerText = localData.length
+  }
+};
+setCartValues()
+
+
+
 document.addEventListener('DOMContentLoaded', () => {
   const ui = new UI();
   const products = new Products();
+
 
   //get all products
   products.getProducts().then(products => {
     ui.displayProducts(products);
   });
+
 });
