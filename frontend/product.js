@@ -87,8 +87,6 @@ class UI {
       let colorOption = document.querySelector('.color-choice');
       let colorChoice = colorOption.options[colorOption.selectedIndex].text;
 
-      //amount
-
       // let quantity = document.querySelector('.product-amt');
       let cartQuantity = 1
 
@@ -101,14 +99,17 @@ class UI {
       let cart = JSON.parse(localStorage.getItem('products'))
 
       if (cart) {
-        cart.forEach(function (product) {
-          if (cart.some(product => product.colorChoice === colorChoice && product.productId === id)) {
-            product.cartQuantity++
-          } else {
-            cart.push({ 'productId': id, name, image, colorChoice, cartQuantity, price });
-          }
-        });
-        localStorage.setItem('products', JSON.stringify(cart));
+        if (cart.some(product => product.colorChoice === colorChoice && product.productId === id)) {
+          cart.forEach(function (product) {
+            if (product.colorChoice === colorChoice && product.productId === id) {
+              product.cartQuantity++
+            }
+          });
+          localStorage.setItem('products', JSON.stringify(cart));
+        } else {
+          cart.push({ 'productId': id, name, image, colorChoice, cartQuantity, price });
+          localStorage.setItem('products', JSON.stringify(cart));
+        }
       } else {
         localStorage.setItem('products', JSON.stringify(
           [
@@ -116,7 +117,6 @@ class UI {
           ]
         ));
       }
-
 
       setCartValues()
 
