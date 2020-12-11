@@ -159,7 +159,6 @@ subForm.addEventListener('submit', (e) => {
   }).then(response => {
     return response.json()
   }).then(result => {
-    console.log(result);
 
     const urlString = './confirmation.html?id=' + result.orderId;
     window.location = urlString

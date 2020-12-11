@@ -40,7 +40,6 @@ class Product {
   }
 }
 
-
 //display product
 class UI {
   displayProduct(item) {
@@ -52,12 +51,11 @@ class UI {
       <select name="colors" class="color-choice">
         ${item.colors.map(color => { return `<option class="color-options" value="${color}">${color}</option>` }).join("")}
       </select>
-      <input type="number" class="product-amt" value="1" min="1" placeholder="1">
-      <h4 class="item-price">$${item.price}</h4>
       <button class="bag-btn-out" data-id=${item.id} data-image=${item.image} data-name=${item.name}>
         <i class="fas fa-shopping-cart"></i>
           add to bag
       </button>
+      <h4 class="item-price">$${item.price}</h4>
      </div>
       <article class="product">
        <div class="img-container">
@@ -75,7 +73,7 @@ class UI {
     const button = document.querySelector('.bag-btn-out');
 
     button.addEventListener('click', () => {
-
+      console.log('blah');
       let id = button.dataset.id
       console.log(id);
 
@@ -91,8 +89,8 @@ class UI {
 
       //amount
 
-      let quantity = document.querySelector('.product-amt');
-      let cartQuantity = parseInt(quantity.value)
+      // let quantity = document.querySelector('.product-amt');
+      let cartQuantity = 1
 
       //price 
       let price = document.querySelector('.item-price').textContent;
@@ -100,19 +98,23 @@ class UI {
 
       //storage
 
-      let products = [];
-      let existingProd = localStorage.getItem('products')
-      if (existingProd) {
-        products = JSON.parse(existingProd);
-      }
-      products.push({ 'productId': id, name, image, colorChoice, cartQuantity, price });
-      localStorage.setItem('products', JSON.stringify(products));
+      let cart = JSON.parse(localStorage.getItem('products'))
 
-      for (let i = 0; i < products.length; i++) {
-        console.log(products[i].colorChoice);
-        if (products[i].colorChoice) {
-          products[i].cartQuantity = cartQuantity
-        }
+      if (cart) {
+        cart.forEach(function (product) {
+          if (cart.some(product => product.colorChoice === colorChoice && product.productId === id)) {
+            product.cartQuantity++
+          } else {
+            cart.push({ 'productId': id, name, image, colorChoice, cartQuantity, price });
+          }
+        });
+        localStorage.setItem('products', JSON.stringify(cart));
+      } else {
+        localStorage.setItem('products', JSON.stringify(
+          [
+            { 'productId': id, name, image, colorChoice, cartQuantity, price }
+          ]
+        ));
       }
 
 

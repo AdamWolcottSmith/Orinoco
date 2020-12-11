@@ -220,9 +220,8 @@ body {
 }
 
 .bag-btn-out {
-  position: relative;
-  left: 50%;
-  bottom: 21%;
+  display: block;
+  margin: auto;
   background: var(--primaryColor);
   border: none;
   text-transform: uppercase;
