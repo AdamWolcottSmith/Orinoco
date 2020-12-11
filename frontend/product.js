@@ -99,39 +99,38 @@ class UI {
       price = parseInt(price.slice(1), 10);
 
       //storage
+
       let products = [];
-      if (localStorage.getItem('products')) {
-        products = JSON.parse(localStorage.getItem('products'));
+      let existingProd = localStorage.getItem('products')
+      if (existingProd) {
+        products = JSON.parse(existingProd);
       }
       products.push({ 'productId': id, name, image, colorChoice, cartQuantity, price });
       localStorage.setItem('products', JSON.stringify(products));
 
-      //cart
-      this.setCartValues(products)
+      for (let i = 0; i < products.length; i++) {
+        console.log(products[i].colorChoice);
+        if (products[i].colorChoice) {
+          products[i].cartQuantity = cartQuantity
+        }
+      }
+
+
+      setCartValues()
+
     });
-  }
-  setCartValues(products) {
-    if (products.length > 0) {
-      let navIcon = document.querySelector('.cart-icon');
-      navIcon.innerText = products.length
-    }
   }
 };
 
-
-//local storage
-class Storage {
-  static saveProduct(id, color) {
-    localStorage.setItem('cart', JSON.stringify(id, color));
-  };
-  static getProduct(id) {
-
-  };
-
-  static saveCart(cart) {
-    localStorage.setItem('cart', JSON.stringify(cart));
+function setCartValues() {
+  const localData = JSON.parse(localStorage.getItem('products'));
+  if (localData !== null) {
+    let navIcon = document.querySelector('.cart-icon');
+    navIcon.innerText = localData.length
   }
-}
+};
+setCartValues()
+
 
 const ui = new UI();
 const product = new Product();

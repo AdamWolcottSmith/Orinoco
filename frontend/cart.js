@@ -134,32 +134,6 @@ subForm.addEventListener('submit', (e) => {
 
   const localData = JSON.parse(localStorage.getItem('products'))
   const idSum = localData.map(product => product.productId);
-  // const prodQty = idSum.push(product.productproduct => product.productId);
-
-  // loop thru prod ids
-  // and for every prod id loop thru cartqty let prodArr = [] prodArr.push(productId)
-
-  // for (let i = 0; i < localData.productId.length; i++) {
-  //   for (let i = 0; i < localData.cartQuantity.length; i++) {
-  //     let prodArr = [];
-  //     prodArr.push()
-  //   }
-  // }
-
-
-  // const prodFilter = localData.map(product => product.cartQuantity)
-  // console.log(prodFilter);
-
-  // function prodArr() {
-  //   let idSum = []
-  //   const localData = JSON.parse(localStorage.getItem('products'))
-  //   const cartItem = localData.filter(product => product.productId);
-  //   const itemSum = cartItem.map(product => product.productId * product.cartQuantity);
-  //   const total = itemSum.reduce((acc, item) => acc + item, 0);
-  //   idSum = total
-  //   return idSum
-  // }
-
 
   let reqBody = {
     contact: {
@@ -187,30 +161,11 @@ subForm.addEventListener('submit', (e) => {
   }).then(result => {
     console.log(result);
 
-    // const urlString = './confirmation.html?id=' + result.orderId;
+    const urlString = './confirmation.html?id=' + result.orderId;
+    window.location = urlString
 
   }).catch(error => {
     console.log(error);
   });
-
-
-  // function showError() {
-  //   if (email.validity.valueMissing) {
-  //     alert('You need to enter an e-mail address.');
-  //   } else if (email.validity.typeMismatch) {
-  //     alert('Entered value needs to be an e-mail address.');
-  //   }
-  // }
-
-  // if (!email.validity.valueMissing) {
-  //   showError();
-  //   e.preventDefault();
-  // } else {
-
-  // }
-
-
-
-
 })
 
