@@ -47,7 +47,7 @@
         <h3>your total : $ <span class="cart-total">0</span></h3>
             <!-- submit form -->
   <div class="form-container">
-    <form class="form" id="submit-form">
+    <form class="form" id="submit-form" name = "submitForm">
 
       <label for="first-name">first name</label>
       <input type="text" id="first-name" name="firstName" required/>
@@ -62,7 +62,7 @@
       <input type="text" id="city" name="city" required/>
 
       <label for="email">email</label>
-      <input type="email" id="email" name="email" required/>
+      <input type="email" pattern=".+@.+\..+" id="email" name="email" required/>
       <button type="submit" class="clear-cart banner-btn">Checkout</button>
     </form>
   </div>
