@@ -102,6 +102,7 @@ class UI {
         if (cart.some(product => product.colorChoice === colorChoice && product.productId === id)) {
           cart.forEach(function (product) {
             if (product.colorChoice === colorChoice && product.productId === id) {
+              console.log('in for each', product);
               product.cartQuantity++
             }
           });

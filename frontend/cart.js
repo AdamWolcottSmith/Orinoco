@@ -21,9 +21,9 @@ function addCartItem(item) {
       <span class="remove-item" data-id="${item.productId + item.colorChoice}">remove</span>
     </div>
     <div>
-      <i class="fas fa-chevron-up" data-id=${item.productId}></i>
+      <i class="fas fa-chevron-up" data-color="${item.colorChoice}" data-id=${item.productId}></i>
       <p class="item-amount">${item.cartQuantity}</p>
-      <i class="fas fa-chevron-down" data-id=${item.productId}></i>
+      <i class="fas fa-chevron-down" data-color="${item.colorChoice}" data-id=${item.productId}></i>
     </div>
   `;
   cartContent.appendChild(div)
@@ -67,7 +67,8 @@ if (localStorage.getItem('products') == null) {
 
   chevUpElems.forEach(chevUp => {
     chevUp.addEventListener('click', (e) => {
-      let products = data.filter(product => (e.target.dataset.id === product.productId));
+      let products = data.filter(product => (e.target.dataset.id === product.productId && e.target.dataset.color === product.colorChoice));
+      console.log(e.target.dataset);
       let product = products[0];
       product.cartQuantity++;
       e.target.nextElementSibling.innerText = product.cartQuantity;
@@ -77,7 +78,7 @@ if (localStorage.getItem('products') == null) {
   });
   chevDownElems.forEach(chevDown => {
     chevDown.addEventListener('click', (e) => {
-      let products = data.filter(product => (e.target.dataset.id === product.productId));
+      let products = data.filter(product => (e.target.dataset.id === product.productId && e.target.dataset.color === product.colorChoice));
       let product = products[0];
       if (product.cartQuantity === 1) {
         e.target.previousElementSibling.innerText = 1
